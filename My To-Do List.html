@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .todo-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .input-section {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .input-section input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px 0 0 8px;
+            outline: none;
+        }
+        
+        .input-section button {
+            padding: 10px;
+            border: none;
+            background: #28a745;
+            color: white;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+        }
+        
+        .input-section button:hover {
+            background: #218838;
+        }
+        
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        ul li {
+            background: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        ul li.completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+        
+        .actions button {
+            border: none;
+            padding: 5px 8px;
+            margin-left: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .complete-btn {
+            background: #007bff;
+            color: white;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="todo-container">
+        <h2>My To-Do List</h2>
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="Enter a task...">
+            <button onclick="addTask()">Add</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        function addTask() {
+            const taskInput = document.getElementById("taskInput");
+            const taskList = document.getElementById("taskList");
+
+            if (taskInput.value.trim() === "") {
+                alert("Please enter a task!");
+                return;
+            }
+
+            // Create list item
+            const li = document.createElement("li");
+            li.textContent = taskInput.value;
+
+            // Action buttons
+            const actions = document.createElement("div");
+            actions.className = "actions";
+
+            const completeBtn = document.createElement("button");
+            completeBtn.textContent = "✔";
+            completeBtn.className = "complete-btn";
+            completeBtn.onclick = () => {
+                li.classList.toggle("completed");
+            };
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "✖";
+            deleteBtn.className = "delete-btn";
+            deleteBtn.onclick = () => {
+                taskList.removeChild(li);
+            };
+
+            actions.appendChild(completeBtn);
+            actions.appendChild(deleteBtn);
+            li.appendChild(actions);
+
+            taskList.appendChild(li);
+
+            taskInput.value = ""; // clear input
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        #projectsContainer {
+            margin-top: 20px;
+        }
+        
+        #projectsContainer.hidden {
+            display: none;
+        }
+        
+        #projectList {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+        
+        #projectList li {
+            background-color: #e9ecef;
+            margin-bottom: 8px;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        #projectList li:hover {
+            background-color: #dee2e6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>My Projects</h1>
+        <button id="projectsButton">View Projects</button>
+
+        <div id="projectsContainer" class="hidden">
+            <h2>Select a Project</h2>
+            <ul id="projectList"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const projectsButton = document.getElementById('projectsButton');
+            const projectsContainer = document.getElementById('projectsContainer');
+            const projectList = document.getElementById('projectList');
+
+            // Project data with file paths
+            const projects = [{
+                name: "My To-Do List",
+                file: "My To-Do List.html"
+            }, {
+                name: "Calculator",
+                file: "Calculator.html"
+            }, {
+                name: "Weather App",
+                file: "Weather App.html"
+            }, {
+                name: "Responsive Image Gallery",
+                file: "Responsive Image Gallery.html"
+            }];
+
+            // Render project list
+            function renderProjects() {
+                projectList.innerHTML = '';
+                projects.forEach(project => {
+                    const li = document.createElement('li');
+                    li.textContent = project.name;
+                    li.setAttribute('data-project-name', project.name);
+                    projectList.appendChild(li);
+                });
+            }
+
+            // Toggle project list visibility
+            projectsButton.addEventListener('click', () => {
+                projectsContainer.classList.toggle('hidden');
+                if (!projectsContainer.classList.contains('hidden')) {
+                    renderProjects();
+                }
+            });
+
+            // Open project file when clicked
+            projectList.addEventListener('click', (e) => {
+                if (e.target.tagName === 'LI') {
+                    const project = projects.find(p => p.name === e.target.getAttribute('data-project-name'));
+                    if (project && project.file) {
+                        window.open(project.file, "_blank"); // Opens in new tab
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

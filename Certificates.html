@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio - Certificates</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        
+        h1,
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+        }
+        
+        .certificates-grid li {
+            text-align: center;
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+            /* Adjust as needed */
+        }
+        
+        .certificates-grid li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .certificates-grid li h3 {
+            margin: 0;
+            color: #34495e;
+            font-size: 1.1em;
+        }
+        /* Modal for displaying the certificate */
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            position: relative;
+            background-color: #fff;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 900px;
+            height: 90vh;
+            /* Make it take more height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            /* Include padding in height/width */
+        }
+        /* Styles for the image viewer (using background-image) */
+        
+        #imageView {
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            /* Resize the background image to make sure it is fully visible */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #f0f0f0;
+            /* Fallback background color */
+            -webkit-user-select: none;
+            /* Safari */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE10+ */
+            user-select: none;
+            /* Standard syntax */
+            pointer-events: none;
+            /* Prevent right-click on the image itself */
+        }
+        
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            /* Ensure close button is above image */
+        }
+        
+        .close-button:hover,
+        .close-button:focus {
+            color: #fff;
+            /* Make it white on hover for better visibility on dark background */
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>My Certificates</h1>
+        </header>
+
+        <section class="section">
+
+            <ul id="certificatesList" class="certificates-grid">
+            </ul>
+        </section>
+    </div>
+
+    <div id="certificateModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="imageView"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const certificatesList = document.getElementById('certificatesList');
+            const certificateModal = document.getElementById('certificateModal');
+            const imageView = document.getElementById('imageView'); // Reference to the div for image
+            const closeButton = document.querySelector('.close-button');
+
+            // Sample data for certificates
+            // 'lok bharath.jpg' మీ ఫైల్ పేరును ఇక్కడ చేర్చండి
+            const certificates = [{
+                    name: "Web Development",
+                    file: "lok bharath.jpg",
+                    type: "image"
+                }, {
+                    name: "Web Designer | UI/UX",
+                    file: "pixxels.jpg",
+                    type: "image"
+                }, // ఇది మీ lok bharath.jpg అనుకోండి
+                // మీ lok bharath.jpg ఇక్కడ
+            ];
+
+            // Function to render the certificate list
+            function renderCertificates() {
+                certificates.forEach(cert => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<h3>${cert.name}</h3>`;
+                    li.setAttribute('data-file', cert.file);
+                    li.setAttribute('data-type', cert.type); // Store file type
+                    certificatesList.appendChild(li);
+                });
+            }
+
+            // Function to open the modal and display the certificate (image or pdf)
+            function openCertificateModal(fileUrl, fileType) {
+                // Clear previous content
+                imageView.style.backgroundImage = 'none';
+                imageView.innerHTML = '';
+
+                if (fileType === 'image') {
+                    // Display image using background-image for anti-download effect
+                    imageView.style.backgroundImage = `url('${fileUrl}')`;
+                    imageView.style.pointerEvents = 'none'; // Prevent right-click on the image area
+                    imageView.style.userSelect = 'none'; // Prevent text selection-like actions
+                } else if (fileType === 'pdf') {
+                    // For PDFs, use the object tag
+                    const objectTag = document.createElement('object');
+                    objectTag.setAttribute('data', fileUrl);
+                    objectTag.setAttribute('type', 'application/pdf');
+                    objectTag.style.width = '100%';
+                    objectTag.style.height = '100%';
+                    imageView.appendChild(objectTag); // Append object to imageView div
+                }
+
+                certificateModal.style.display = 'flex'; // Show the modal
+            }
+
+            // Event listener for clicks on the certificate list
+            certificatesList.addEventListener('click', (event) => {
+                const li = event.target.closest('li');
+                if (li) {
+                    const fileName = li.getAttribute('data-file');
+                    const fileType = li.getAttribute('data-type');
+                    openCertificateModal(fileName, fileType);
+                }
+            });
+
+            // Event listener to close the modal
+            closeButton.addEventListener('click', () => {
+                certificateModal.style.display = 'none';
+                imageView.style.backgroundImage = 'none'; // Clear background image
+                imageView.innerHTML = ''; // Clear object tag if it was a PDF
+            });
+
+            // Close modal when clicking outside of it
+            window.addEventListener('click', (event) => {
+                if (event.target === certificateModal) {
+                    certificateModal.style.display = 'none';
+                    imageView.style.backgroundImage = 'none';
+                    imageView.innerHTML = '';
+                }
+            });
+
+            // Prevent right-click context menu on the entire document (optional, but enhances protection)
+            document.addEventListener('contextmenu', event => {
+                // You can add conditions here if you only want to disable right-click on the image modal
+                if (certificateModal.style.display === 'flex') { // Only disable if modal is open
+                    event.preventDefault();
+                }
+            });
+
+
+            // Initial rendering of certificates
+            renderCertificates();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .weather-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            width: 350px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        
+        h2 {
+            margin-bottom: 15px;
+        }
+        
+        .search {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .search input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px 0 0 8px;
+            outline: none;
+        }
+        
+        .search button {
+            padding: 10px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+        }
+        
+        .search button:hover {
+            background: #0056b3;
+        }
+        
+        .weather-info {
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .weather-info img {
+            width: 80px;
+        }
+        
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="weather-container">
+        <h2>🌤 Weather App</h2>
+        <div class="search">
+            <input type="text" id="cityInput" placeholder="Enter city name...">
+            <button onclick="getWeather()">Search</button>
+        </div>
+        <div class="weather-info" id="weatherInfo">
+            <h3 id="cityName"></h3>
+            <img id="icon" src="" alt="Weather Icon">
+            <p id="temperature"></p>
+            <p id="condition"></p>
+            <p id="humidity"></p>
+        </div>
+        <p class="error" id="errorMsg">❌ City not found!</p>
+    </div>
+
+    <script>
+        async function getWeather() {
+            const city = document.getElementById("cityInput").value;
+            const apiKey = "YOUR_API_KEY"; // <-- Replace with your OpenWeather API key
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+            const weatherInfo = document.getElementById("weatherInfo");
+            const errorMsg = document.getElementById("errorMsg");
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.cod === "404") {
+                    weatherInfo.style.display = "none";
+                    errorMsg.style.display = "block";
+                    return;
+                }
+
+                document.getElementById("cityName").textContent = data.name + ", " + data.sys.country;
+                document.getElementById("temperature").textContent = `🌡 ${data.main.temp}°C`;
+                document.getElementById("condition").textContent = `☁️ ${data.weather[0].description}`;
+                document.getElementById("humidity").textContent = `💧 Humidity: ${data.main.humidity}%`;
+                document.getElementById("icon").src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
+                weatherInfo.style.display = "block";
+                errorMsg.style.display = "none";
+            } catch (error) {
+                console.error(error);
+                weatherInfo.style.display = "none";
+                errorMsg.style.display = "block";
+            }
+        }
+    </script>
+</body>
+
+</html>
