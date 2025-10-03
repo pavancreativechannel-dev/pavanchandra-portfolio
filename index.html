@@ -26,6 +26,7 @@
             padding: 20px 50px;
             background: #fff;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
         }
         
         nav .logo {
@@ -53,6 +54,16 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        /* Toggle button */
+        
+        #toggle {
+            display: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.2em;
+            color: #6c63ff;
+            user-select: none;
+        }
         
         section.hero {
             display: flex;
@@ -75,21 +86,15 @@
             color: #6c63ff;
         }
         
+        section.hero .info h2 {
+            margin-bottom: 15px;
+            color: #444;
+        }
+        
         section.hero .info p {
             margin-bottom: 20px;
             font-size: 1.1em;
             line-height: 1.6;
-        }
-        
-        section.hero .info .buttons {
-            display: flex;
-            gap: 15px;
-        }
-        
-        section.hero .info .buttons .btn-outline {
-            border: 2px solid #6c63ff;
-            color: #6c63ff;
-            background: none;
         }
         
         section.hero .image img {
@@ -112,13 +117,44 @@
             text-decoration: none;
             font-size: 1.2em;
         }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        /* Mobile responsive */
+        
         @media (max-width: 768px) {
+            nav {
+                flex-wrap: wrap;
+                padding: 20px;
+            }
+            #toggle {
+                display: block;
+            }
             nav ul {
                 display: none;
+                flex-direction: column;
+                width: 100%;
+                background: #fff;
+                margin-top: 10px;
+                padding: 10px 0;
+                border-top: 1px solid #eee;
+            }
+            nav ul.active {
+                display: flex;
+            }
+            nav ul li {
+                padding: 10px;
+                text-align: center;
+            }
+            nav .btn {
+                width: 100%;
+                margin-top: 10px;
             }
             section.hero {
                 flex-direction: column;
                 text-align: center;
+                padding: 30px;
             }
             section.hero .info,
             section.hero .image {
@@ -137,7 +173,8 @@
 
     <nav>
         <div class="logo">P.Pavan Chandra</div>
-        <ul>
+        <span id="toggle">☰ Menu</span>
+        <ul id="nav-links">
             <li><a href="#">Home</a></li>
             <li><a href="about me.html">About</a></li>
             <li><a href="resume.html">Resume</a></li>
@@ -151,12 +188,11 @@
     <section class="hero">
         <div class="info">
             <h1>Hi, I'm <span>Pavan Chandra</span></h1>
-            <h2>Frontend Developer || Web Web Designer || UI/UX</h2>
+            <h2>Frontend Developer || Web Designer || UI/UX</h2>
             <p>I build modern and responsive web applications with great UI/UX. Check out my projects and portfolio below.</p>
-
         </div>
         <div class="image">
-            <img src="pavan.jpg" alt="Pavan Chandra" width="40px" height="300px">
+            <img src="pavan.jpg" alt="Pavan Chandra">
         </div>
     </section>
 
@@ -166,7 +202,15 @@
         <a href="#">Twitter</a>
     </footer>
 
-</body>
+    <script>
+        const toggle = document.getElementById('toggle');
+        const navLinks = document.getElementById('nav-links');
 
+        toggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
+
+</body>
 
 </html>
