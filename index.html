@@ -112,6 +112,24 @@
             text-decoration: none;
             font-size: 1.2em;
         }
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            section.hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            section.hero .info,
+            section.hero .image {
+                max-width: 100%;
+            }
+            section.hero .image img {
+                width: 100%;
+                max-width: 300px;
+                margin-top: 20px;
+            }
+        }
     </style>
 </head>
 
@@ -149,5 +167,6 @@
     </footer>
 
 </body>
+
 
 </html>
